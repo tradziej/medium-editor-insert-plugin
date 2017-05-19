@@ -115,7 +115,7 @@
             .on('keyup click', $.proxy(this, 'toggleButtons'))
             .on('selectstart mousedown', '.medium-insert, .medium-insert-buttons', $.proxy(this, 'disableSelection'))
             .on('click', '.medium-insert-buttons-show', $.proxy(this, 'toggleAddons'))
-            .on('click', '.medium-insert-action', $.proxy(this, 'addonAction'))
+            .on('click touchend', '.medium-insert-action', $.proxy(this, 'addonAction'))
             .on('paste', '.medium-insert-caption-placeholder', function (e) {
                 $.proxy(that, 'removeCaptionPlaceholder')($(e.target));
             });
@@ -396,6 +396,13 @@
             $current = $current.find('p:first');
         }
 
+        // On first click insert empty paragraph to show medium insert buttons
+        if ($current.length === 0) {
+            this.$el.html(this.templates['src/js/templates/core-empty-line.hbs']().trim());
+            $current = $el.find('p');
+            that.moveCaret($current);
+        }
+
         $p = $current.is('p') ? $current : $current.closest('p');
 
         this.clean();
@@ -486,14 +493,12 @@
             position = {};
 
         if ($p.length) {
-            position.left = $p.position().left;
+            position.left = $p.position().left - 35;
             position.top = $p.position().top;
 
             if (activeAddon) {
-                position.left += $p.width() - $buttons.find('.medium-insert-buttons-show').width() - 10;
-                position.top += $p.height() - 20 + ($lastCaption.length ? -$lastCaption.height() - parseInt($lastCaption.css('margin-top'), 10) : 10);
+                position.top += $p.height() + 20 + ($lastCaption.length ? -$lastCaption.height() - parseInt($lastCaption.css('margin-top'), 10) : 10);
             } else {
-                position.left += -parseInt($buttons.find('.medium-insert-buttons-addons').css('left'), 10) - parseInt($buttons.find('.medium-insert-buttons-addons button:first').css('margin-left'), 10);
                 position.top += parseInt($p.css('margin-top'), 10);
             }
 

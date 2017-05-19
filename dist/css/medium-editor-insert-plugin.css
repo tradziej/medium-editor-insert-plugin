@@ -1,5 +1,5 @@
 /*! 
- * medium-editor-insert-plugin v2.4.0 - jQuery insert plugin for MediumEditor
+ * medium-editor-insert-plugin v2.4.1 - jQuery insert plugin for MediumEditor
  *
  * http://linkesch.com/medium-editor-insert-plugin
  * 
@@ -19,27 +19,23 @@
     .medium-insert-images figure:first-child img, .mediumInsert figure:first-child img {
       margin-top: 0; }
   .medium-insert-images.medium-insert-images-left, .medium-insert-images-left.mediumInsert, .mediumInsert.small {
-    max-width: 33.33%;
+    max-width: 55%;
     float: left;
     margin: 0 30px 20px 0; }
   .medium-insert-images.medium-insert-images-right, .medium-insert-images-right.mediumInsert {
-    max-width: 33.33%;
+    max-width: 55%;
     float: right;
     margin: 0 0 20px 30px; }
   .medium-insert-images.medium-insert-images-grid, .medium-insert-images-grid.mediumInsert {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
     -webkit-box-align: start;
-    -webkit-align-items: flex-start;
         -ms-flex-align: start;
             align-items: flex-start;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
     margin: 0.5em -0.5em; }
@@ -119,18 +115,16 @@
     .medium-editor-insert-plugin .medium-insert-buttons .medium-insert-buttons-show {
       font-size: 25px;
       -webkit-transform: rotate(0);
-          -ms-transform: rotate(0);
               transform: rotate(0);
-      -webkit-transition: -webkit-transform 100ms;
-              transition: transform 100ms; }
+      transition: -webkit-transform 100ms;
+      transition: transform 100ms; }
       .medium-editor-insert-plugin .medium-insert-buttons .medium-insert-buttons-show span {
         display: block;
         margin-top: -4px; }
       .medium-editor-insert-plugin .medium-insert-buttons .medium-insert-buttons-show.medium-insert-buttons-rotate {
-        -webkit-transition: -webkit-transform 250ms;
-                transition: transform 250ms;
+        transition: -webkit-transform 250ms;
+        transition: transform 250ms;
         -webkit-transform: rotate(45deg);
-            -ms-transform: rotate(45deg);
                 transform: rotate(45deg); }
     .medium-editor-insert-plugin .medium-insert-buttons .medium-insert-buttons-addons {
       margin: 0;
@@ -200,9 +194,6 @@
     left: 0;
     content: attr(data-placeholder);
     color: #ccc; }
-
-.medium-insert-embeds-selected .medium-insert-embed {
-  outline: 2px solid #000; }
 
 .medium-insert-embeds-toolbar {
   display: none; }

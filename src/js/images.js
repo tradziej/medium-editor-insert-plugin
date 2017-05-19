@@ -8,7 +8,7 @@
     var pluginName = 'mediumInsert',
         addonName = 'Images', // first char is uppercase
         defaults = {
-            label: '<span class="fa fa-camera"></span>',
+            label: '<span class="ico ico-03"></span><div>Add photo</div>',
             deleteMethod: 'POST',
             deleteScript: 'delete.php',
             preview: true,
@@ -22,22 +22,22 @@
             fileDeleteOptions: {},
             styles: {
                 wide: {
-                    label: '<span class="fa fa-align-justify"></span>'
+                    label: '<span class="fa fa-align-justify"></span><p>middle</p>'
                     // added: function ($el) {},
                     // removed: function ($el) {}
                 },
                 left: {
-                    label: '<span class="fa fa-align-left"></span>'
+                    label: '<span class="fa fa-align-left"></span><p>left-align</p>'
                     // added: function ($el) {},
                     // removed: function ($el) {}
                 },
                 right: {
-                    label: '<span class="fa fa-align-right"></span>'
+                    label: '<span class="fa fa-align-right"></span><p>right-align</p>'
                     // added: function ($el) {},
                     // removed: function ($el) {}
                 },
                 grid: {
-                    label: '<span class="fa fa-th"></span>'
+                    label: '<span class="fa fa-th"></span><p>group</p>'
                     // added: function ($el) {},
                     // removed: function ($el) {}
                 }
@@ -139,13 +139,13 @@
 
     Images.prototype.events = function () {
         $(document)
-            .on('click', $.proxy(this, 'unselectImage'))
+            .on('click touchend', $.proxy(this, 'unselectImage'))
             .on('keydown', $.proxy(this, 'removeImage'))
-            .on('click', '.medium-insert-images-toolbar .medium-editor-action', $.proxy(this, 'toolbarAction'))
-            .on('click', '.medium-insert-images-toolbar2 .medium-editor-action', $.proxy(this, 'toolbar2Action'));
+            .on('click touchend', '.medium-insert-images-toolbar .medium-editor-action', $.proxy(this, 'toolbarAction'))
+            .on('click touchend', '.medium-insert-images-toolbar2 .medium-editor-action', $.proxy(this, 'toolbar2Action'));
 
         this.$el
-            .on('click', '.medium-insert-images img', $.proxy(this, 'selectImage'));
+            .on('click touchend', '.medium-insert-images img', $.proxy(this, 'selectImage'));
 
         $(window)
             .on('resize', $.proxy(this, 'autoRepositionToolbars'));
@@ -212,16 +212,18 @@
         // http://stackoverflow.com/questions/6767887/
         // what-is-the-best-way-to-check-for-xhr2-file-upload-support
         if (new XMLHttpRequest().upload) {
-            fileUploadOptions.progress = function (e, data) {
+            $file.bind('fileuploadprogress', function (e, data) {
                 $.proxy(that, 'uploadProgress', e, data)();
-            };
+            });
 
-            fileUploadOptions.progressall = function (e, data) {
+            $file.bind('fileuploadprogressall', function (e, data) {
                 $.proxy(that, 'uploadProgressall', e, data)();
-            };
+            });
         }
 
-        $file.fileupload($.extend(true, {}, this.options.fileUploadOptions, fileUploadOptions));
+        $file.unsigned_cloudinary_upload(this.options.fileUploadOptions.upload_preset, {
+            cloud_name: this.options.fileUploadOptions.cloud_name
+        }, $.extend(true, {}, this.options.fileUploadOptions, fileUploadOptions));
 
         $file.click();
     };
@@ -359,7 +361,7 @@
      */
 
     Images.prototype.uploadDone = function (e, data) {
-        $.proxy(this, 'showImage', data.result.files[0].url, data)();
+        $.proxy(this, 'showImage', data.result.url, data)();
 
         this.core.clean();
         this.sorting();
@@ -376,6 +378,11 @@
         var $place = this.$el.find('.medium-insert-active'),
             domImage,
             that;
+
+        if (/^(http|https)?:\/\/[a-zA-Z0-9-\.]+\.[a-z]{2,4}/.test(img)) {
+            // Add cloudinary params to auto adjust image orientation
+            img = img.replace(/upload\/[a-z,_0-9]*\//, 'upload/a_auto/');
+        }
 
         // Hide editor's placeholder
         $place.click();
