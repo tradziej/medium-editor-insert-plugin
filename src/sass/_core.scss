@@ -34,16 +34,27 @@
         a {
             text-decoration: underline;
             cursor: pointer;
+            display: block;
+            font-size: 7px;
+            line-height: 9px;
+            color: #9B9B9B;
         }
 
+        .medium-insert-buttons-file {
+          display: block;
+          width: 32px;
+          height: 32px;
+          margin-top: -5px;
+          font-size: 25px;
+          line-height: 28px;
+          text-align: center;
+        }
         .medium-insert-buttons-show {
             box-sizing: border-box;
             display: block;
             width: 32px;
             height: 32px;
             margin-top: -5px;
-            border-radius: 20px;
-            border: 1px solid;
             font-size: 25px;
             line-height: 28px;
             text-align: center;

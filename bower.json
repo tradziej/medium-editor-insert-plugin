@@ -24,7 +24,8 @@
     "medium-editor": "~5.10.0",
     "handlebars": "~4.0.0",
     "blueimp-file-upload": "~9.11.1",
-    "jquery-sortable": "~0.9.12"
+    "jquery-sortable": "~0.9.12",
+    "cloudinary_js": "~2.0.3"
   },
   "devDependencies": {
     "jquery-cycle2": "~2.1.6"

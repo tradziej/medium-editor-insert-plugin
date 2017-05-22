@@ -19,11 +19,11 @@
     .medium-insert-images figure:first-child img, .mediumInsert figure:first-child img {
       margin-top: 0; }
   .medium-insert-images.medium-insert-images-left, .medium-insert-images-left.mediumInsert, .mediumInsert.small {
-    max-width: 33.33%;
+    max-width: 55%;
     float: left;
     margin: 0 30px 20px 0; }
   .medium-insert-images.medium-insert-images-right, .medium-insert-images-right.mediumInsert {
-    max-width: 33.33%;
+    max-width: 55%;
     float: right;
     margin: 0 0 20px 30px; }
   .medium-insert-images.medium-insert-images-grid, .medium-insert-images-grid.mediumInsert {
@@ -105,22 +105,31 @@
     font-size: 0.9em; }
     .medium-editor-insert-plugin .medium-insert-buttons a {
       text-decoration: underline;
-      cursor: pointer; }
+      cursor: pointer;
+      display: block;
+      font-size: 7px;
+      line-height: 9px;
+      color: #9B9B9B; }
+    .medium-editor-insert-plugin .medium-insert-buttons .medium-insert-buttons-file {
+      display: block;
+      width: 32px;
+      height: 32px;
+      margin-top: -5px;
+      font-size: 25px;
+      line-height: 28px;
+      text-align: center; }
     .medium-editor-insert-plugin .medium-insert-buttons .medium-insert-buttons-show {
       box-sizing: border-box;
       display: block;
       width: 32px;
       height: 32px;
       margin-top: -5px;
-      border-radius: 20px;
-      border: 1px solid;
       font-size: 25px;
       line-height: 28px;
       text-align: center;
       text-decoration: none;
       background: #fff;
       -webkit-transform: rotate(0);
-          -ms-transform: rotate(0);
               transform: rotate(0);
       -webkit-transition: -webkit-transform 100ms;
               transition: transform 100ms; }
@@ -128,7 +137,6 @@
         -webkit-transition: -webkit-transform 250ms;
                 transition: transform 250ms;
         -webkit-transform: rotate(45deg);
-            -ms-transform: rotate(45deg);
                 transform: rotate(45deg); }
     .medium-editor-insert-plugin .medium-insert-buttons .medium-insert-buttons-addons {
       margin: 0;
@@ -209,9 +217,6 @@
     left: 0;
     content: attr(data-placeholder);
     color: #ccc; }
-
-.medium-insert-embeds-selected .medium-insert-embed {
-  outline: 2px solid #000; }
 
 .medium-insert-embeds-toolbar {
   display: none; }

@@ -103,7 +103,7 @@ describe('Core', function () {
         expect(this.$el.find('#paragraph2').hasClass('medium-insert-active')).toBe(false);
     });
 
-    it('shows only addon button after clicking on addon paragraph', function () {
+    it('shows image addon button after clicking on addon paragraph', function () {
         this.$el.html('<p id="paragraph" class="medium-insert-images">&nbsp;</p><p id="paragraph2" class="medium-insert-active">test</p>');
 
         this.$el.mediumInsert();
@@ -115,7 +115,7 @@ describe('Core', function () {
         jasmine.clock().tick(101);
 
         expect(this.$el.find('.medium-insert-buttons').css('display')).toBe('block');
-        expect(this.$el.find('.medium-insert-buttons a[data-addon="embeds"]').parent().css('display')).toBe('none');
+        expect(this.$el.find('.medium-insert-buttons a[data-addon="images"]').parent().css('display')).toBe('inline');
     });
 
     it('hides plugin\'s buttons after clicking on non-empty paragraph', function () {
@@ -129,25 +129,6 @@ describe('Core', function () {
         this.$el.find('#paragraph2').click();
 
         expect(this.$el.find('.medium-insert-buttons').css('display')).toBe('none');
-    });
-
-    it('toggles addons buttons after clicking on show button', function () {
-        this.$el.html('<p id="paragraph">&nbsp;</p><p>test</p>');
-
-        this.$el.mediumInsert();
-
-        // Place caret at the beginning of #paragraph
-        placeCaret(document.getElementById('paragraph'), 0);
-
-        this.$el.find('#paragraph').click();
-        this.$el.find('.medium-insert-buttons-show').click();
-
-        expect(this.$el.find('.medium-insert-buttons-addons').css('display')).toBe('block');
-        expect(this.$el.find('.medium-insert-buttons-show').hasClass('medium-insert-buttons-rotate')).toBe(true);
-
-        this.$el.find('.medium-insert-buttons-show').click();
-
-        expect(!this.$el.find('.medium-insert-buttons-show').hasClass('medium-insert-buttons-rotate')).toBe(true);
     });
 
     it('calls addon\'s add function if addon\'s button is clicked', function () {

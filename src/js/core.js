@@ -102,9 +102,9 @@
                 e.preventDefault();
             })
             .on('keyup click', $.proxy(this, 'toggleButtons'))
-            .on('selectstart mousedown', '.medium-insert, .medium-insert-buttons', $.proxy(this, 'disableSelection'))
-            .on('click', '.medium-insert-buttons-show', $.proxy(this, 'toggleAddons'))
-            .on('click', '.medium-insert-action', $.proxy(this, 'addonAction'))
+            //.on('selectstart mousedown', '.medium-insert, .medium-insert-buttons', $.proxy(this, 'disableSelection'))
+            //.on('click', '.medium-insert-buttons-show', $.proxy(this, 'toggleAddons'))
+            .on('click touchend', '.medium-insert-action', $.proxy(this, 'addonAction'))
             .on('paste', '.medium-insert-caption-placeholder', function (e) {
                 $.proxy(that, 'removeCaptionPlaceholder')($(e.target));
             });
@@ -177,15 +177,10 @@
      */
 
     Core.prototype.editorUpdatePlaceholder = function (el) {
-        var $clone = $(el).clone(),
-            cloneHtml;
+        var contents = $(el).children()
+            .not('.medium-insert-buttons').contents();
 
-        $clone.find('.medium-insert-buttons').remove();
-        cloneHtml = $clone.html()
-            .replace(/^\s+|\s+$/g, '')
-            .replace(/^<p( class="medium-insert-active")?><br><\/p>$/, '');
-
-        if (!(el.querySelector('img, blockquote')) && cloneHtml === '') {
+        if (contents.length === 1 && contents[0].nodeName === 'BR') {
             this.showPlaceholder(el);
             this.base._hideInsertButtons($(el));
         } else {
@@ -382,11 +377,19 @@
             $current = $current.find('p:first');
         }
 
+        // On first click insert empty paragraph to show medium insert buttons
+        if($current.length === 0){
+          this.$el.html(this.templates['src/js/templates/core-empty-line.hbs']().trim());
+          $current = $el.find('p');
+          that.moveCaret($current);
+        }
         $p = $current.is('p') ? $current : $current.closest('p');
 
         this.clean();
 
-        if ($el.hasClass('medium-editor-placeholder') === false && $el.closest('.medium-insert-buttons').length === 0 && $current.closest('.medium-insert-buttons').length === 0) {
+        // Display insert buttons for empty editor
+        // $el.hasClass('medium-editor-placeholder') === false &&
+        if ($el.closest('.medium-insert-buttons').length === 0 && $current.closest('.medium-insert-buttons').length === 0) {
 
             this.$el.find('.medium-insert-active').removeClass('medium-insert-active');
 
@@ -450,6 +453,7 @@
         $el.find('.medium-insert-buttons-show').removeClass('medium-insert-buttons-rotate');
     };
 
+
     /**
      * Position buttons
      *
@@ -465,10 +469,10 @@
 
         if ($p.length) {
 
-            left = $p.position().left - parseInt($buttons.find('.medium-insert-buttons-addons').css('left'), 10) - parseInt($buttons.find('.medium-insert-buttons-addons a:first').css('margin-left'), 10);
-            left = left < 0 ? $p.position().left : left;
-            top = $p.position().top + parseInt($p.css('margin-top'), 10);
-
+            //left = $p.position().left - parseInt($buttons.find('.medium-insert-buttons-addons').css('left'), 10) - parseInt($buttons.find('.medium-insert-buttons-addons a:first').css('margin-left'), 10);
+            left = $p.position().left - 35;
+            //left = left < 0 ? $p.position().left : left;
+            top = $p.position().top + parseInt($p.css('margin-top'), 20);
             if (activeAddon) {
                 if ($p.position().left !== $first.position().left) {
                     left = $first.position().left;

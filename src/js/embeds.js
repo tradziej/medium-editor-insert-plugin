@@ -13,17 +13,17 @@
             captionPlaceholder: 'Type caption (optional)',
             styles: {
                 wide: {
-                    label: '<span class="fa fa-align-justify"></span>',
+                    label: '<span class="fa fa-align-justify"></span><p>middle</p>',
                     // added: function ($el) {},
                     // removed: function ($el) {}
                 },
                 left: {
-                    label: '<span class="fa fa-align-left"></span>',
+                    label: '<span class="fa fa-align-left"></span><p>left-align</p>',
                     // added: function ($el) {},
                     // removed: function ($el) {}
                 },
                 right: {
-                    label: '<span class="fa fa-align-right"></span>',
+                    label: '<span class="fa fa-align-right"></span><p>right-align</p>',
                     // added: function ($el) {},
                     // removed: function ($el) {}
                 }
@@ -106,8 +106,8 @@
             .on('click', '.medium-insert-embeds-toolbar2 .medium-editor-action', $.proxy(this, 'toolbar2Action'));
 
         this.$el
-            .on('keyup click paste', $.proxy(this, 'togglePlaceholder'))
-            .on('keydown', $.proxy(this, 'processLink'))
+            //.on('keyup click paste', $.proxy(this, 'togglePlaceholder'))
+            //.on('keydown', $.proxy(this, 'processLink'))
             .on('click', '.medium-insert-embeds-overlay', $.proxy(this, 'selectEmbed'))
             .on('contextmenu', '.medium-insert-embeds-placeholder', $.proxy(this, 'fixRightClickOnPlaceholder'));
     };
@@ -161,7 +161,7 @@
      *
      * @return {void}
      */
-
+/*
     Embeds.prototype.add = function () {
         var $place = this.$el.find('.medium-insert-active');
 
@@ -184,14 +184,14 @@
         $place.click();
         this.core.hideButtons();
     };
-
+*/
     /**
      * Toggles placeholder
      *
      * @param {Event} e
      * @return {void}
      */
-
+/*
     Embeds.prototype.togglePlaceholder = function (e) {
         var $place = $(e.target),
             selection = window.getSelection(),
@@ -228,25 +228,25 @@
             this.$el.find('.medium-insert-embeds-active').remove();
         }
     };
-
+*/
     /**
      * Right click on placeholder in Chrome selects whole line. Fix this by placing caret at the end of line
      *
      * @param {Event} e
      * @return {void}
      */
-
+/*
     Embeds.prototype.fixRightClickOnPlaceholder = function (e) {
         this.core.moveCaret($(e.target));
     };
-
+*/
     /**
      * Process link
      *
      * @param {Event} e
      * @return {void}
      */
-
+/*
     Embeds.prototype.processLink = function (e) {
         var $place = this.$el.find('.medium-insert-embeds-active'),
             url;
@@ -274,14 +274,14 @@
             }
         }
     };
-
+*/
     /**
      * Get HTML via oEmbed proxy
      *
      * @param {string} url
      * @return {void}
      */
-
+/*
     Embeds.prototype.oembed = function (url) {
         var that = this;
 
@@ -321,7 +321,7 @@
             }
         });
     };
-
+*/
     /**
      * Get HTML using regexp
      *
@@ -332,22 +332,27 @@
     Embeds.prototype.parseUrl = function (url) {
         var html;
 
-        if (!(new RegExp(['youtube', 'youtu.be', 'vimeo', 'instagram'].join('|')).test(url))) {
+        if (!(new RegExp(['youtube', 'youtu.be', 'vimeo', 'instagram', 'twitter', 'facebook'].join('|')).test(url))) {
             $.proxy(this, 'convertBadEmbed', url)();
             return false;
         }
 
         html = url.replace(/\n?/g, '')
-            .replace(/^((http(s)?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|v\/)?)([a-zA-Z0-9\-_]+)(.*)?$/, '<div class="video video-youtube"><iframe width="420" height="315" src="//www.youtube.com/embed/$7" frameborder="0" allowfullscreen></iframe></div>')
+            .replace(/^((http(s)?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|v\/)?)([a-zA-Z0-9\-_]+)(.*)?$/, '<div class="video video-youtube"><iframe width="100%" height="500" src="//www.youtube.com/embed/$7" frameborder="0" allowfullscreen></iframe></div>')
             .replace(/^https?:\/\/vimeo\.com(\/.+)?\/([0-9]+)$/, '<div class="video video-vimeo"><iframe src="//player.vimeo.com/video/$2" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>')
-            //.replace(/^https:\/\/twitter\.com\/(\w+)\/status\/(\d+)\/?$/, '<blockquote class="twitter-tweet" align="center" lang="en"><a href="https://twitter.com/$1/statuses/$2"></a></blockquote><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>')
-            //.replace(/^https:\/\/www\.facebook\.com\/(video.php|photo.php)\?v=(\d+).+$/, '<div class="fb-post" data-href="https://www.facebook.com/photo.php?v=$2"><div class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/photo.php?v=$2">Post</a></div></div>')
+            .replace(/^https:\/\/twitter\.com\/(\w+)\/status\/(\d+)\/?$/, '<div class="embed-tweet" data-id="$2" data-user-id="$1"><blockquote class="twitter-tweet" align="center" lang="en"><a href="https://twitter.com/$1/statuses/$2"></a></blockquote><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></div>')
+            .replace(/^https:\/\/www\.facebook\.com\/(video.php|photo.php)\?v=(\d+).+$/, '<div class="fb-post" data-href="https://www.facebook.com/photo.php?v=$2"><div class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/photo.php?v=$2">Post</a></div></div>')
             .replace(/^https?:\/\/instagram\.com\/p\/(.+)\/?$/, '<span class="instagram"><iframe src="//instagram.com/p/$1/embed/" width="612" height="710" frameborder="0" scrolling="no" allowtransparency="true"></iframe></span>');
-
 
         this.embed((/<("[^"]*"|'[^']*'|[^'">])*>/).test(html) ? html : false);
     };
 
+    $.embedTweet = function(){
+      var tweet_divs = document.getElementsByClassName("embed-tweet");
+      $.each(tweet_divs, function(index, div){
+        $(div).html('<blockquote class="twitter-tweet" align="center" lang="en"><a href="https://twitter.com/'+$(div).data('userId')+'/statuses/'+$(div).data('id')+'"></a></blockquote><script async src="//platform.twitter.com/widgets.js" charset="utf-8">');
+      });
+    };
     /**
      * Add html to page
      *
@@ -567,6 +572,19 @@
             $lis = $ul.find('li'),
             $embed = this.$el.find('.medium-insert-embeds-selected'),
             that = this;
+
+        // Update iframe dimensions
+        var width, height;
+        switch ($button.data('action')) {
+          case 'wide':
+            width = '100%';
+            height = '500';
+            break;
+          default:
+            width = '400';
+            height = '400';
+        }
+        $embed.find('iframe').attr({'height': height, 'width': width});
 
         $button.addClass('medium-editor-button-active');
         $li.siblings().find('.medium-editor-button-active').removeClass('medium-editor-button-active');
